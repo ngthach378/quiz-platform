@@ -26,6 +26,9 @@ from backend.models.exam_question import ExamQuestion
 from backend.models.question_option import QuestionOption
 from backend.models.question_statement import QuestionStatement
 from backend.models.numeric_answer import NumericAnswer
+from backend.models.attempt import Attempt
+from backend.models.attempt_answer import AttemptAnswer
+from backend.models.attempt_statement_answer import AttemptStatementAnswer
 
 target_metadata = Base.metadata
 # other values from the config, defined by the needs of env.py,
