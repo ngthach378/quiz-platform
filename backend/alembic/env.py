@@ -23,11 +23,11 @@ from backend.models.user import User
 from backend.models.exam import Exam
 from backend.models.question import Question
 from backend.models.exam_question import ExamQuestion
+from backend.models.question_option import QuestionOption
+from backend.models.question_statement import QuestionStatement
+from backend.models.numeric_answer import NumericAnswer
 
 target_metadata = Base.metadata
-
-target_metadata = Base.metadata
-
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
