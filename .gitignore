@@ -18,3 +18,8 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# Database
+database/*.db
+database/*.sqlite
+database/*.sqlite3
