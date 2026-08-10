@@ -21,6 +21,10 @@ if config.config_file_name is not None:
 from backend.database import Base
 from backend.models.user import User
 from backend.models.exam import Exam
+from backend.models.question import Question
+from backend.models.exam_question import ExamQuestion
+
+target_metadata = Base.metadata
 
 target_metadata = Base.metadata
 
