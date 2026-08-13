@@ -15,7 +15,7 @@ from backend.routers.numeric_answers import (
 from backend.routers.exam_questions import (
     router as exam_questions_router,
 )
-
+from backend.routers.attempts import router as attempts_router
 
 app = FastAPI(
     title="Quiz Platform API",
@@ -31,7 +31,7 @@ app.include_router(question_options_router)
 app.include_router(question_statements_router)
 app.include_router(numeric_answers_router)
 app.include_router(exam_questions_router)
-
+app.include_router(attempts_router)
 
 @app.get("/")
 def root():
