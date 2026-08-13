@@ -8,6 +8,7 @@ from backend.models.attempt import Attempt
 from backend.models.exam import Exam
 from backend.models.user import User
 from backend.schemas.attempt import AttemptCreate, AttemptResponse
+from backend.scoring.engine import calculate_attempt_score
 
 
 router = APIRouter(
@@ -16,7 +17,10 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=AttemptResponse)
+@router.post(
+    "/",
+    response_model=AttemptResponse,
+)
 def create_attempt(
     data: AttemptCreate,
     db: Session = Depends(get_db),
@@ -61,7 +65,10 @@ def create_attempt(
     return attempt
 
 
-@router.get("/{attempt_id}", response_model=AttemptResponse)
+@router.get(
+    "/{attempt_id}",
+    response_model=AttemptResponse,
+)
 def get_attempt(
     attempt_id: int,
     db: Session = Depends(get_db),
@@ -77,5 +84,43 @@ def get_attempt(
             status_code=404,
             detail="Attempt not found",
         )
+
+    return attempt
+
+
+@router.post(
+    "/{attempt_id}/submit",
+    response_model=AttemptResponse,
+)
+def submit_attempt(
+    attempt_id: int,
+    db: Session = Depends(get_db),
+):
+    attempt = (
+        db.query(Attempt)
+        .filter(Attempt.id == attempt_id)
+        .first()
+    )
+
+    if attempt is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Attempt not found",
+        )
+
+    if attempt.status != "IN_PROGRESS":
+        raise HTTPException(
+            status_code=400,
+            detail="Attempt has already been submitted",
+        )
+
+    score = calculate_attempt_score(attempt, db)
+
+    attempt.score = score
+    attempt.submitted_at = datetime.now(timezone.utc)
+    attempt.status = "SUBMITTED"
+
+    db.commit()
+    db.refresh(attempt)
 
     return attempt
